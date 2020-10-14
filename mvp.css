@@ -448,3 +448,74 @@ blockquote footer {
 }
 
 /* Custom CSS */
+
+.headshot {
+    border-radius: 50%;
+}
+
+.jobtitle {
+    margin-top: -1rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+ul.experience {
+    padding-inline-start: 20px;
+}
+
+.name {
+    display: inline-block;
+}
+
+a.social {
+    margin: 0px 0 0 3px;
+    vertical-align: middle;
+}
+
+html {
+    scroll-behavior: smooth;
+  }
+
+  footer {
+    width: 100%
+    text-align: center;
+   }
+
+  footer ul {
+    display: block;
+    list-style: none;
+    margin: 0 0;
+    text-align: center;
+    padding-inline-start: 0px;
+   }
+
+   footer ul li {
+    display: inline-table;
+    margin: 0 3rem;
+    color: grey;
+}
+
+footer p  {
+    margin-top: 4rem;
+    text-align: center;
+}
+
+#contact form p {
+    text-align: center;
+}
+
+#contact form {
+    width: 38rem;
+}
+
+#contact form h3 {
+   text-align: center;
+}
+
+#contact form header {
+    margin: 0 0;
+}
+
+article {
+    width: 43rem;
+    margin: 0px 8%;
+}
