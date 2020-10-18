@@ -449,6 +449,10 @@ blockquote footer {
 
 /* Custom CSS */
 
+dfn {
+    border-bottom: 1px dashed grey;
+}
+
 .headshot {
     border-radius: 50%;
 }
