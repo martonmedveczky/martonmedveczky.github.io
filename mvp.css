@@ -449,6 +449,10 @@ blockquote footer {
 
 /* Custom CSS */
 
+#about aside {
+    width: var(--width-card-medium);
+}
+
 dfn {
     border-bottom: 1px dashed grey;
 }
@@ -520,8 +524,8 @@ footer p  {
 }
 
 article {
-    width: 43rem;
-    margin: 0px 8%;
+    /*margin: 0px 8%;*/
+    font-size: 150%;
 }
 
 mark#innovation {
