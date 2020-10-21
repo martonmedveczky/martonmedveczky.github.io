@@ -512,7 +512,7 @@ footer p  {
 }
 
 #contact form {
-    width: 40rem;
+    width: var(--width-card-wide);
 }
 
 #contact form h3 {
