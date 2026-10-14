@@ -278,7 +278,7 @@ function renderSum() {
   }).join('');
   document.getElementById('v-sum').innerHTML =
     '<div class="kpis" style="margin-top:12px">' +
-    '<div class="kpi"><div class="l">Pénz most</div><div class="v">' + ft(k.cashNow) + '</div><div class="s">' + esc(k.cashLabel.replace('Pénz most', '').trim()) + '</div></div>' +
+    '<div class="kpi"><div class="l">Szabad pénz</div><div class="v">' + ft(k.freeNow) + '</div><div class="s">számlán ' + ft(k.cashNow) + ', ebből ' + ft(k.cashNow - k.freeNow) + ' előre befizetett tandíj ' + esc(k.cashLabel.replace('Pénz most', '').trim()) + '</div></div>' +
     '<div class="kpi"><div class="l">Eredmény 25/26 eddig</div><div class="v ' + (k.ytdRes < 0 ? 'neg' : 'pos') + '">' + ft(k.ytdRes) + '</div><div class="s">bevétel ' + ft(k.ytdRev) + '</div></div>' +
     '<div class="kpi"><div class="l">26/27 terv eredmény</div><div class="v ' + (k.planRes2627 < 0 ? 'neg' : 'pos') + '">' + ft(k.planRes2627) + '</div><div class="s">teljes tanév</div></div>' +
     '<div class="kpi"><div class="l">Gyerekek</div><div class="v">' + (D.kidsPlan['2026-09'] || '–') + ' fő</div><div class="s">nullszaldó: ' + k.breakEven + ' fő</div></div></div>' +
