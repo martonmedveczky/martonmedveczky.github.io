@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>Óvoda pénzügyek</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#f3f1ec;--card:#fff;--ink:#1d2433;--muted:#6b7280;--line:#e7e3da;--accent:#2f5d50;--accent2:#e8f0ec;--warn:#a15c00;--warnbg:#fff4e0;--bad:#b42318;--badbg:#fdecea;--good:#1f7a4d;--goodbg:#e7f5ed;--shadow:0 1px 2px rgba(20,20,30,.06),0 4px 14px rgba(20,20,30,.05)}
+@media (prefers-color-scheme:dark){:root{--bg:#14171c;--card:#1d2128;--ink:#eceef2;--muted:#9aa3b2;--line:#2b313b;--accent:#7cc3a8;--accent2:#1f2d29;--warn:#f0b35a;--warnbg:#2e2416;--bad:#ff8a80;--badbg:#341c1c;--good:#7fd6a5;--goodbg:#17291f;--shadow:none}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:16px 16px 96px}
+header h1{font-size:1.35rem;margin:4px 0 0;font-weight:800;letter-spacing:-.01em}
+header .sub{color:var(--muted);font-size:.85rem}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:5}
+nav button{flex:1;border:0;background:none;color:var(--muted);font:600 .8rem/1.2 inherit;padding:8px 4px;border-radius:12px}
+nav button .ic{display:block;font-size:1.3rem;margin-bottom:2px}
+nav button.on{color:var(--accent);background:var(--accent2)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:12px 0 8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 13px;font:600 .9rem inherit}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--line);margin:10px 0;overflow:hidden}
+.pad{padding:14px 16px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.kpi .l{font-size:.75rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+.kpi .v{font-size:1.25rem;font-weight:800;margin-top:2px;font-variant-numeric:tabular-nums}
+.kpi .s{font-size:.8rem;color:var(--muted)}
+.neg{color:var(--bad)}.pos{color:var(--good)}
+.row{display:flex;align-items:center;gap:12px;padding:13px 16px;cursor:pointer}
+.row .t{flex:1;min-width:0;font-weight:700}
+.row .t small{display:block;font-weight:500;color:var(--muted);font-size:.8rem}
+.row .a{font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
+.chev{color:var(--muted);transition:transform .15s}
+.open>.row .chev{transform:rotate(90deg)}
+.bar{height:6px;background:var(--line);border-radius:6px;margin:0 16px 12px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:6px}
+.bar.over i{background:var(--bad)}
+.items{display:none;border-top:1px solid var(--line)}
+.open .items{display:block}
+.it{padding:11px 16px;border-bottom:1px solid var(--line)}
+.it:last-child{border-bottom:0}
+.it .top{display:flex;gap:10px;align-items:baseline}
+.it .top b{flex:1;min-width:0;font-size:.95rem;word-break:break-word}
+.it .top span{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.it .meta{color:var(--muted);font-size:.8rem;margin-top:2px;word-break:break-word}
+.tag{display:inline-block;font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:999px;margin:4px 4px 0 0;background:var(--warnbg);color:var(--warn)}
+.tag.bad{background:var(--badbg);color:var(--bad)}.tag.ok{background:var(--goodbg);color:var(--good)}.tag.mut{background:var(--accent2);color:var(--accent)}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--accent);font:700 .85rem inherit;border-radius:10px;padding:7px 12px;margin-top:8px}
+.btn.pri{background:var(--accent);color:#fff;border-color:var(--accent)}
+.form{display:none;margin-top:8px}
+.form.on{display:block}
+textarea,input{width:100%;font:inherit;font-size:16px;border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:var(--bg);color:var(--ink)}
+textarea{min-height:64px;resize:vertical}
+.note{font-size:.82rem;background:var(--accent2);border-radius:10px;padding:7px 10px;margin-top:6px}
+.note b{font-weight:700}
+.hint{background:var(--accent2);color:var(--accent);border-radius:12px;padding:10px 14px;font-size:.88rem;margin:8px 0}
+.warnbox{background:var(--warnbg);color:var(--warn);border-radius:12px;padding:10px 14px;font-size:.88rem;margin:8px 0;font-weight:600}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+table{width:100%;border-collapse:collapse;font-size:.88rem;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;white-space:nowrap;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:700;font-size:.75rem;text-transform:uppercase}
+#loading{padding:60px 0;text-align:center;color:var(--muted)}
+.hidden{display:none}
+h2{font-size:1.05rem;margin:18px 0 4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Óvoda pénzügyek</h1><div class="sub" id="sub">Betöltés…</div></header>
+  <div id="loading">Adatok betöltése…</div>
+  <section id="v-cost" class="hidden"></section>
+  <section id="v-debt" class="hidden"></section>
+  <section id="v-sum" class="hidden"></section>
+</div>
+<nav>
+  <button data-v="cost" class="on"><span class="ic">🧾</span>Költségek</button>
+  <button data-v="debt"><span class="ic">💳</span>Ki tartozik</button>
+  <button data-v="sum"><span class="ic">📊</span>Összkép</button>
+</nav>
+<script>
+// google.script.run helyettesítő: az adatokat az Apps Script JSON API-ból kéri (így Google-fiók nélkül is működik)
+(function () {
+  var API = 'https://script.google.com/macros/s/AKfycbwPGbNoKFebL4Wd6hiuWDzDPgVXZjk2mCUL-zPOg5WU9Jv_VvGPMOxNWhSP5haUJcM/exec';
+  function call(fn, args, ok, fail) {
+    fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fn: fn, args: args }), redirect: 'follow', credentials: 'omit' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (j.error) { fail && fail(new Error(j.error)); } else { ok && ok(j.ok); } })
+      .catch(function (e) { fail && fail(new Error('Nincs kapcsolat: ' + e.message)); });
+  }
+  function runner() {
+    var ok = null, fail = null, o = {
+      withSuccessHandler: function (f) { ok = f; return o; },
+      withFailureHandler: function (f) { fail = f; return o; },
+      appData: function () { call('appData', [].slice.call(arguments), ok, fail); },
+      addNote: function () { call('addNote', [].slice.call(arguments), ok, fail); }
+    };
+    return o;
+  }
+  window.google = { script: {} };
+  Object.defineProperty(window.google.script, 'run', { get: runner });
+})();
+</script>
+<script>
+var D = null, curMonth = null, debtFilter = 'due', view = 'cost';
+var HU = ['jan.', 'febr.', 'márc.', 'ápr.', 'máj.', 'jún.', 'júl.', 'aug.', 'szept.', 'okt.', 'nov.', 'dec.'];
+function ft(x) { var v = Math.round(x || 0); var s = Math.abs(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); return (v < 0 ? '−' : '') + s + ' Ft'; }
+function fk(x) { var v = Math.round((x || 0) / 1000); return (v < 0 ? '−' : '') + Math.abs(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
+function mlab(m) { return m.slice(0, 4) + '. ' + HU[+m.slice(5, 7) - 1]; }
+function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function getName() { try { return localStorage.getItem('ovi_name') || ''; } catch (e) { return ''; } }
+function setName(n) { try { localStorage.setItem('ovi_name', n); } catch (e) {} }
+var PIN = '';
+try { PIN = localStorage.getItem('ovi_pin') || ''; } catch (e) {}
+function pinScreen(msg) {
+  var el = document.getElementById('loading');
+  el.classList.remove('hidden');
+  el.innerHTML = '<div class="card pad" style="text-align:left;max-width:360px;margin:0 auto"><b>Belépés</b><div class="meta" style="color:var(--muted);font-size:.85rem;margin:4px 0 10px">Írd be a PIN kódot. Ezen a telefonon megjegyezzük.</div>' +
+    (msg ? '<div class="warnbox">' + msg + '</div>' : '') +
+    '<input id="pin" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="PIN">' +
+    '<button class="btn pri" style="width:100%;margin-top:10px" onclick="submitPin()">Belépés</button></div>';
+  setTimeout(function () { var p = document.getElementById('pin'); if (p) p.focus(); }, 50);
+}
+function submitPin() {
+  PIN = document.getElementById('pin').value.trim();
+  try { localStorage.setItem('ovi_pin', PIN); } catch (e) {}
+  document.getElementById('loading').textContent = 'Adatok betöltése…';
+  load();
+}
+
+function load() {
+  if (!PIN) { pinScreen(''); return; }
+  google.script.run.withSuccessHandler(function (s) {
+    D = JSON.parse(s);
+    var ms = monthsWithCost();
+    curMonth = ms[0];
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('sub').textContent = 'Utolsó lezárt hónap: ' + mlab(D.lastActual) + ' · frissítve ' + D.generated;
+    render();
+  }).withFailureHandler(function (e) {
+    var msg = String(e && e.message || e);
+    if (msg.indexOf('PIN') >= 0) { try { localStorage.removeItem('ovi_pin'); } catch (x) {} PIN = ''; pinScreen('Hibás PIN.'); return; }
+    if (msg.indexOf('LOCKED') >= 0) { pinScreen('Túl sok hibás próbálkozás. Próbáld újra 10 perc múlva.'); return; }
+    document.getElementById('loading').textContent = 'Hiba a betöltésnél: ' + msg;
+  }).appData(PIN);
+}
+function monthsWithCost() {
+  var set = {}; D.costs.forEach(function (c) { if (c.m >= '2025-09') set[c.m] = 1; });
+  return Object.keys(set).sort().reverse();
+}
+function notesFor(key) { return D.notes.filter(function (n) { return n.key === key; }); }
+
+function planFor(cat, m) { var p = D.plan[cat]; if (!p) return 0; return m < '2026-09' ? p[0] : p[1]; }
+
+function flagsFor(c, dupCount) {
+  var f = [];
+  if (c.cat === 'Egyéb költség' || !c.cat) f.push(['Besorolatlan', 'bad']);
+  if (c.amt < 0) f.push(['Negatív összeg', '']);
+  if (dupCount > 1) f.push(['Lehet dupla (' + dupCount + '×)', '']);
+  return f;
+}
+
+function render() {
+  ['cost', 'debt', 'sum'].forEach(function (v) { document.getElementById('v-' + v).classList.toggle('hidden', v !== view); });
+  if (view === 'cost') renderCost(); else if (view === 'debt') renderDebt(); else renderSum();
+}
+
+function noteForm(type, key, m, item) {
+  var id = 'f' + Math.random().toString(36).slice(2, 9);
+  var label = type === 'költség' ? 'Mi a gond? (pl. „ez étel, nem anyagköltség” vagy „dupla”) – ez megy az e-mailbe' : 'Mit beszéltetek? (pl. „jövő héten utal”)';
+  return '<button class="btn" onclick="toggleForm(\'' + id + '\')">' + (type === 'költség' ? '⚑ Hibát jelzek' : '✓ Megkerestem') + '</button>' +
+    '<div class="form" id="' + id + '" data-type="' + esc(type) + '" data-key="' + esc(key) + '" data-m="' + esc(m) + '" data-item="' + esc(item) + '">' +
+    '<textarea placeholder="' + label + '"></textarea>' +
+    '<input placeholder="Neved" value="' + esc(getName()) + '" style="margin-top:6px">' +
+    '<button class="btn pri" onclick="sendNote(\'' + id + '\')">Küldés</button></div>';
+}
+function toggleForm(id) { document.getElementById(id).classList.toggle('on'); }
+function sendNote(id) {
+  var f = document.getElementById(id), txt = f.querySelector('textarea').value.trim(), who = f.querySelector('input').value.trim();
+  if (!txt) { f.querySelector('textarea').focus(); return; }
+  if (who) setName(who);
+  var b = f.querySelector('.pri'); b.disabled = true; b.textContent = 'Küldés…';
+  google.script.run.withSuccessHandler(function (s) { D.notes = JSON.parse(s); render(); if (f.dataset.type === 'költség') { var w = document.createElement('div'); w.className = 'hint'; w.style.cssText = 'position:fixed;left:16px;right:16px;bottom:84px;z-index:9;text-align:center;font-weight:700'; w.textContent = '✓ Elküldve Péternek és Mártonnak'; document.body.appendChild(w); setTimeout(function () { w.remove(); }, 3000); } })
+    .withFailureHandler(function (e) { b.disabled = false; b.textContent = 'Hiba, próbáld újra'; })
+    .addNote(f.dataset.type, f.dataset.key, f.dataset.m, f.dataset.item, txt, who, PIN);
+}
+function notesHtml(list) {
+  return list.map(function (n) { return '<div class="note"><b>' + esc(n.who || 'valaki') + '</b> · ' + esc(n.ts) + '<br>' + esc(n.note) + '</div>'; }).join('');
+}
+function toggleOpen(el) { el.parentNode.classList.toggle('open'); }
+
+// ---------- KÖLTSÉGEK ----------
+function renderCost() {
+  var ms = monthsWithCost(), m = curMonth;
+  var rows = D.costs.filter(function (c) { return c.m === m; });
+  var dup = {}; rows.forEach(function (c) { var k = c.code + '|' + c.par + '|' + c.desc + '|' + c.amt; dup[k] = (dup[k] || 0) + 1; });
+  var cats = {};
+  rows.forEach(function (c) { var k = c.cat || 'Egyéb költség'; (cats[k] = cats[k] || []).push(c); });
+  Object.keys(D.plan).forEach(function (k) { if (!cats[k] && planFor(k, m) > 0) cats[k] = []; });
+  var total = rows.reduce(function (a, c) { return a + c.amt; }, 0);
+  var mo = D.months.filter(function (x) { return x.m === m; })[0] || {};
+  var flagged = 0;
+  var catHtml = Object.keys(cats).map(function (k) {
+    var items = cats[k], sum = items.reduce(function (a, c) { return a + c.amt; }, 0), p = planFor(k, m);
+    var pct = p > 0 ? Math.min(100, Math.round(sum / p * 100)) : (sum ? 100 : 0);
+    var over = p > 0 && sum > p * 1.15;
+    var itHtml = items.slice().sort(function (a, b) { return Math.abs(b.amt) - Math.abs(a.amt); }).map(function (c) {
+      var fl = flagsFor(c, dup[c.code + '|' + c.par + '|' + c.desc + '|' + c.amt]), ns = notesFor(c.key);
+      if (fl.length) flagged++;
+      return '<div class="it"><div class="top"><b>' + esc(c.par || c.desc || c.acc) + '</b><span>' + ft(c.amt) + '</span></div>' +
+        '<div class="meta">' + esc(c.d) + ' · ' + esc(c.desc) + '<br>Számla: ' + esc(c.acc) + '</div>' +
+        fl.map(function (x) { return '<span class="tag ' + x[1] + '">' + x[0] + '</span>'; }).join('') +
+        (ns.length ? '<span class="tag mut">Jelezve</span>' : '') + notesHtml(ns) +
+        noteForm('költség', c.key, c.m, (c.par || c.desc) + ' · ' + c.amt + ' Ft · ' + c.cat) + '</div>';
+    }).join('');
+    return { sum: sum, html: '<div class="card"><div class="row" onclick="toggleOpen(this)"><span class="chev">▸</span><div class="t">' + esc(k) +
+      '<small>' + items.length + ' tétel · terv ' + ft(p) + '</small></div><div class="a' + (over ? ' neg' : '') + '">' + ft(sum) + '</div></div>' +
+      '<div class="bar' + (over ? ' over' : '') + '"><i style="width:' + pct + '%"></i></div><div class="items">' + (itHtml || '<div class="empty">Nincs tétel ebben a hónapban.</div>') + '</div></div>' };
+  }).sort(function (a, b) { return b.sum - a.sum; }).map(function (x) { return x.html; }).join('');
+
+  document.getElementById('v-cost').innerHTML =
+    '<div class="chips">' + ms.map(function (x) { return '<button class="chip' + (x === m ? ' on' : '') + '" onclick="curMonth=\'' + x + '\';renderCost()">' + mlab(x) + '</button>'; }).join('') + '</div>' +
+    '<div class="kpis"><div class="kpi"><div class="l">Költség (tény)</div><div class="v">' + ft(total) + '</div><div class="s">terv: ' + ft(mo.costPlan) + '</div></div>' +
+    '<div class="kpi"><div class="l">Eltérés</div><div class="v ' + (total > (mo.costPlan || 0) ? 'neg' : 'pos') + '">' + ft(total - (mo.costPlan || 0)) + '</div><div class="s">' + (total > (mo.costPlan || 0) ? 'tervnél több' : 'terven belül') + '</div></div></div>' +
+    (flagged ? '<div class="warnbox">⚠ ' + flagged + ' tételt érdemes megnézni (sárga/piros címke).</div>' : '') +
+    '<div class="hint">Nyisd le a kategóriát. Ha valami rossz helyre került, el van gépelve, vagy nem ide tartozik, nyomd meg a <b>Hibát jelzek</b> gombot, és írd le, mi a gond. Péter (könyvelés) és Márton e-mailben megkapja.</div>' + catHtml;
+}
+
+// ---------- TARTOZÁSOK ----------
+function renderDebt() {
+  var by = {};
+  D.debts.forEach(function (d) { (by[d.id] = by[d.id] || { name: d.name, id: d.id, left: d.left, inv: [] }).inv.push(d); });
+  var kids = Object.keys(by).map(function (k) {
+    var x = by[k];
+    x.due = x.inv.filter(function (i) { return i.age !== 'nem esedékes'; }).reduce(function (a, i) { return a + i.open; }, 0);
+    x.notdue = x.inv.filter(function (i) { return i.age === 'nem esedékes'; }).reduce(function (a, i) { return a + i.open; }, 0);
+    x.old = x.inv.some(function (i) { return i.age === 'régi'; });
+    x.oldest = x.inv.map(function (i) { return i.m; }).sort()[0];
+    x.notes = notesFor('debt|' + x.id);
+    x.unm = (D.unmatched || {})[x.id] || 0; if (x.unm < 100000) x.unm = 0;
+    return x;
+  });
+  var totDue = kids.reduce(function (a, k) { return a + k.due; }, 0), totOld = D.debts.filter(function (i) { return i.age === 'régi'; }).reduce(function (a, i) { return a + i.open; }, 0);
+  var totNot = kids.reduce(function (a, k) { return a + k.notdue; }, 0);
+  var list = kids.filter(function (k) { return debtFilter === 'all' ? true : k.due > 0; })
+    .sort(function (a, b) { return (b.old - a.old) || (b.due - a.due); });
+  var html = list.map(function (k) {
+    var last = k.notes[k.notes.length - 1];
+    var inv = k.inv.slice().sort(function (a, b) { return a.m < b.m ? -1 : 1; }).map(function (i) {
+      var cls = i.age === 'régi' ? 'bad' : (i.age === 'késve' ? '' : 'ok');
+      return '<div class="it"><div class="top"><b>' + mlab(i.m) + ' · ' + esc(i.inv) + '</b><span>' + ft(i.open) + '</span></div>' +
+        '<div class="meta">Határidő: ' + esc(i.due) + ' · számla ' + ft(i.amt) + (i.paid ? ' · befizetve ' + ft(i.paid) : '') + '</div>' +
+        '<span class="tag ' + cls + '">' + (i.age || 'nyitott') + '</span></div>';
+    }).join('');
+    return '<div class="card"><div class="row" onclick="toggleOpen(this)"><span class="chev">▸</span><div class="t">' + esc(k.name) +
+      '<small>' + k.inv.length + ' nyitott számla · legrégebbi ' + mlab(k.oldest) + (last ? ' · utoljára megkeresve ' + esc(last.ts.slice(0, 10)) : '') + '</small>' +
+      (k.old ? '<span class="tag bad">90+ nap</span>' : '') + (k.left ? '<span class="tag mut">kilépett</span>' : '') + (k.unm ? '<span class="tag">⚠ lehet, hogy már fizetett</span>' : '') + (k.due === 0 ? '<span class="tag ok">csak folyó hó</span>' : '') +
+      '</div><div class="a ' + (k.due > 0 ? 'neg' : '') + '">' + ft(k.due || k.notdue) + '</div></div>' +
+      '<div class="items">' + (k.unm ? '<div class="it"><div class="warnbox" style="margin:0">A Novitax szerint ' + ft(k.unm) + '-tal több befizetés érkezett tőlük, mint amennyit a BPS rögzített. Mielőtt szólsz, kérdezd meg az irodát.</div></div>' : '') + inv + '<div class="it">' + notesHtml(k.notes) + noteForm('megkeresés', 'debt|' + k.id, k.oldest, k.name + ' · ' + ft(k.due)) + '</div></div></div>';
+  }).join('');
+  document.getElementById('v-debt').innerHTML =
+    '<div class="kpis" style="margin-top:12px"><div class="kpi"><div class="l">Lejárt tartozás</div><div class="v neg">' + ft(totDue) + '</div><div class="s">ebből 90+ nap: ' + ft(totOld) + '</div></div>' +
+    '<div class="kpi"><div class="l">Folyó hó (még nem késés)</div><div class="v">' + ft(totNot) + '</div><div class="s">' + kids.length + ' család</div></div></div>' +
+    '<div class="chips"><button class="chip' + (debtFilter === 'due' ? ' on' : '') + '" onclick="debtFilter=\'due\';renderDebt()">Lejárt</button>' +
+    '<button class="chip' + (debtFilter === 'all' ? ' on' : '') + '" onclick="debtFilter=\'all\';renderDebt()">Mind</button></div>' +
+    '<div class="hint">Elöl a 90 napnál régebbi tartozások. Ha szóltál a szülőnek, nyomd meg a <b>Megkerestem</b> gombot, és írd le, mit mondott. Így mindenki látja, kivel ki beszélt. A ⚠ jelzésű családoknál előbb az irodával egyeztess.</div>' +
+    (html || '<div class="empty">Nincs lejárt tartozás. 🎉</div>');
+}
+
+// ---------- ÖSSZKÉP ----------
+function renderSum() {
+  var k = D.kpi, nowKids = D.kidsPlan[D.lastActual] || k.headcount;
+  var rows = D.months.filter(function (x) { return x.res !== null; }).slice(-12).reverse().map(function (x) {
+    return '<tr><td>' + mlab(x.m) + '</td><td>' + fk(x.rev) + '</td><td>' + fk(x.cost) + '</td><td class="' + (x.res < 0 ? 'neg' : 'pos') + '">' + fk(x.res) + '</td></tr>';
+  }).join('');
+  document.getElementById('v-sum').innerHTML =
+    '<div class="kpis" style="margin-top:12px">' +
+    '<div class="kpi"><div class="l">Pénz most</div><div class="v">' + ft(k.cashNow) + '</div><div class="s">' + esc(k.cashLabel.replace('Pénz most', '').trim()) + '</div></div>' +
+    '<div class="kpi"><div class="l">Eredmény 25/26 eddig</div><div class="v ' + (k.ytdRes < 0 ? 'neg' : 'pos') + '">' + ft(k.ytdRes) + '</div><div class="s">bevétel ' + ft(k.ytdRev) + '</div></div>' +
+    '<div class="kpi"><div class="l">26/27 terv eredmény</div><div class="v ' + (k.planRes2627 < 0 ? 'neg' : 'pos') + '">' + ft(k.planRes2627) + '</div><div class="s">teljes tanév</div></div>' +
+    '<div class="kpi"><div class="l">Gyerekek</div><div class="v">' + (D.kidsPlan['2026-09'] || '–') + ' fő</div><div class="s">nullszaldó: ' + k.breakEven + ' fő</div></div></div>' +
+    '<h2>Havi eredmény (tény, ezer Ft)</h2><div class="card"><table><tr><th>Hónap</th><th>Bevétel</th><th>Költség</th><th>Eredmény</th></tr>' + rows + '</table></div>' +
+    '<div class="hint">Bevétel = kiszámlázott tandíj + alapítási díj. Költség = Novitax könyvelés. Az adatok havonta, 20-án frissülnek.</div>';
+}
+
+Array.prototype.forEach.call(document.querySelectorAll('nav button'), function (b) {
+  b.addEventListener('click', function () {
+    view = b.dataset.v;
+    Array.prototype.forEach.call(document.querySelectorAll('nav button'), function (x) { x.classList.toggle('on', x === b); });
+    if (D) render(); window.scrollTo(0, 0);
+  });
+});
+load();
+</script>
+</body>
+</html>
